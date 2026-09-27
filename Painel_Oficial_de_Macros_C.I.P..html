@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Oficial de Macros | C.I.P. - Polícia de Hills</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-card: #141e33;
+            --bg-card-hover: #1b2947;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-gold: #fbbf24;
+            --accent-red: #ef4444;
+            --accent-green: #10b981;
+            --border-color: #1e293b;
+            --glow-blue: rgba(37, 99, 235, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            padding: 24px 12px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            border-top: 5px solid var(--accent-blue);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "C.I.P.";
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 7rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 16px;
+        }
+
+        .brand-title h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .dev-badge {
+            background: rgba(37, 99, 235, 0.15);
+            border: 1px solid var(--accent-blue);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #60a5fa;
+            text-align: right;
+            box-shadow: 0 0 15px var(--glow-blue);
+        }
+
+        .dev-badge strong {
+            color: #ffffff;
+            font-weight: 700;
+            display: block;
+            font-size: 0.95rem;
+            margin-top: 2px;
+        }
+
+        .alert-banner {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid var(--accent-red);
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #fca5a5;
+            margin-bottom: 12px;
+        }
+
+        .alert-banner strong {
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-left: 4px solid var(--accent-blue);
+            padding: 14px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        .info-box code {
+            background-color: #0f172a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #38bdf8;
+            font-family: monospace;
+        }
+
+        .category-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #60a5fa;
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 6px;
+            margin-top: 10px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .macro-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .macro-card:hover {
+            border-color: #3b82f6;
+            background-color: var(--bg-card-hover);
+        }
+
+        .macro-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .macro-num {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .macro-text {
+            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.92rem;
+            color: #e2e8f0;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #1d4ed8 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px var(--glow-blue);
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
+        .btn-copy.copied {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        footer {
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer strong {
+            color: #ffffff;
+        }
+
+        .dept-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dept-badge {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .macro-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-copy {
+                justify-content: center;
+                width: 100%;
+            }
+            .dev-badge {
+                text-align: left;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-top">
+            <div class="brand-title">
+                <h1>🛡️ PAINEL OFICIAL DE MACROS | POLÍCIA DE HILLS</h1>
+                <div class="brand-subtitle">Desenvolvido por Leoshin Silva (4º Comando da C.I.P.)</div>
+            </div>
+            <div class="dev-badge">
+                🛠️ Desenvolvimento exclusivo:
+                <strong>Leoshin Silva (4º Comando C.I.P.)</strong>
+            </div>
+        </div>
+
+        <div class="alert-banner">
+            <strong>⚠️ ATENÇÃO EXTREMA: USO OBRIGATÓRIO DE MACROS ⚠️</strong><br>
+            <strong>🛑 AVISO DA C.I.P.: SEM MACROS CONFIGURADAS VOCÊ NÃO PODE SAIR PARA A RUA! É EXTREMAMENTE OBRIGATÓRIO O USO DE MACROS! 🛑</strong><br><br>
+            É essencial e obrigatório o uso de macros em qualquer atividade policial. Atentem-se a isso: toda ação realizada sem o devido aviso prévio (macros) não será aceita e estará sujeita à punição interna.
+        </div>
+
+        <div class="info-box">
+            • <strong>Cordialidade e Postura:</strong> Sejam cordiais e justos com os cidadãos. Um bom RP começa nos detalhes mais simples. Mantenham a postura, sejam pacientes e, em caso de quebra de regras, realizem o registro e acionem o suporte.<br>
+            • <strong>Proibição do /help:</strong> Ressalta-se que o uso do comando <code>/help</code> para solicitar intervenção da administração durante o RP é expressamente proibido. É dever do player registrar quaisquer irregularidades e encaminhá-las via suporte. O uso indevido, insistências ou descumprimento desta orientação estarão sujeitos a punições administrativas, além de sanções internas no departamento policial.
+        </div>
+    </header>
+
+    <section>
+        <div class="category-title">🫡 01. APRESENTAÇÃO E CONTINÊNCIA</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #01</span>
+                <span class="macro-text">/me CONTINÊNCIA SR(A), [PATENTE] SEU NOME [NOME DO TURNO] SE APRESENTANDO A TOTAL QRV!!!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">🟢 02. ENTRADA, SAÍDA E QTX (COMUNICAÇÃO RP)</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #02</span>
+                <span class="macro-text">/flobby [PATENTE] SEU NOME iniciando minhas atividades, a total QRV para os senhores(as)!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #03</span>
+                <span class="macro-text">/flobby [PATENTE] SEU NOME entrando em QTX breve. Retorno em instantes, senhores(as)!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #04</span>
+                <span class="macro-text">/flobby [PATENTE] SEU NOME entrando em QTX definitivo. Bom RP e bom descanso a todos os senhores(as)!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">📑 03. PERMISSÕES E SOLICITAÇÕES (RÁDIO / FLOBBY)</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #05</span>
+                <span class="macro-text">/flobby Permissão para subir ao piso 02 para realizar a coleta do emprego de farm</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #06</span>
+                <span class="macro-text">/flobby Permissão para utilizar a academia para treino</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #07</span>
+                <span class="macro-text">/flobby Algum Oficial QRV com colete disponível para efetuar patrulhamento (PTR) em equipe</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">🌾 04. PATRULHAMENTO DE FARM</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #08</span>
+                <span class="macro-text">/me [POLICIA DE HILLS] VIATURA DE FARM, NÃO ATIREM POR GENTILEZA!!!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">🚘 05. ABORDAGEM E FISCALIZAÇÃO</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #09</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Abordagem de rotina! Cidadão(ã), encoste o veículo, desligue o motor, saia e venha para a parte traseira de costas para mim. Em caso de resistência, utilizarei o taser!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #10</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Cidadão(ã), apresente seus documentos. Caso esteja tudo em ordem, o senhor(a) será liberado(a)!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #11</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Está tudo em ordem, cidadão(ã). Você está liberado(a), agradeço pela sua colaboração.</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #12</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Cidadão(ã), por gentileza, guarde sua arma para garantir a segurança de todos. Caso contrário, serei obrigado(a) a imobilizá-lo(a).</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">⚖️ 06. DETENÇÃO, ALGEMAMENTO E DIREITOS (MIRANDA)</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #13</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] O senhor(a) estará sendo algemado(a) para a segurança da equipe e a sua própria segurança!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #14</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] O senhor(a) está detido(a). Tem o direito de permanecer em silêncio e tudo o que disser poderá ser usado contra você!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #15</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] CIDADÃO, RENDA-SE! VOCÊ FOI IDENTIFICADO PELO NOSSO SISTEMA DE INTELIGÊNCIA E SUAS CARACTERÍSTICAS BATEM COM A NOSSA DESCRIÇÃO!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #16</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] CASO SEJA PEGO COM ARMA NA MÃO E NÃO A GUARDE APÓS O AVISO, SERÁ PRESO DE IMEDIATO!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">🏢 07. SEGURANÇA E ORDEM NO DEPARTAMENTO POLICIAL (DP)</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #17</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Olá, seja bem-vindo(a) ao nosso Departamento Policial. Caso tenha alguma denúncia ou dúvida, sinta-se à vontade para nos informar. Caso contrário, peço que se retire por gentileza, ou será preso(a) após o terceiro aviso!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #18</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] Atenção! Caso não tenha nenhuma dúvida ou denúncia, peço por gentileza que se retire da frente do Departamento Policial. Desacatando a ordem, será conduzido(a) preso(a) após o terceiro aviso!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="category-title">🚨 08. ORDEM PÚBLICA E OPERAÇÕES</div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #19</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] POLÍCIA DE HILLS EM RONDA! CIDADÃO(Ã), AFASTE-SE DA VIATURA POR GENTILEZA!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #20</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] CASO NÃO VÁ UTILIZAR O HOSPITAL, RETIREM-SE TODOS IMEDIATAMENTE OU SERÃO PRESOS APÓS O TERCEIRO AVISO!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #21</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] LOCAL DE TRABALHO NÃO É QG E NEM LUGAR DE AGLOMERAÇÃO. CASO NÃO VÁ TRABALHAR, RETIRE-SE OU SERÁ PRESO(A) APÓS O TERCEIRO AVISO!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #22</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] CASO NÃO FOR PERMANECER DENTRO DO BAR, RETIREM-SE DAS IMEDIAÇÕES! PROIBIDA AGLOMERAÇÃO NA FRENTE DO BAR!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+        <div class="macro-card">
+            <div class="macro-content">
+                <span class="macro-num">Macro #23</span>
+                <span class="macro-text">/me [POLÍCIA DE HILLS] EM OPERAÇÃO NO LOCAL! PEÇO QUE SE AFASTEM E EVITEM REANIMAÇÕES NO PERÍMETRO, CASO CONTRÁRIO IREMOS PRENDÊ-LOS!</span>
+            </div>
+            <button class="btn-copy" onclick="copyMacro(this)">📋 Copiar</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>Desenvolvimento exclusivo por <strong>Leoshin Silva (4º Comando C.I.P.)</strong></p>
+        <p style="margin-top: 4px; font-size: 0.8rem; color: #64748b;">Polícia de Hills - Servidor One State RP</p>
+        <p style="margin-top: 2px; font-size: 0.75rem; color: #475569;">© Todos os direitos reservados. Proibida a cópia ou redistribuição do código e das macros sem autorização expressa.</p>
+
+        <div class="dept-badges">
+            <span class="dept-badge">C.I.P.</span>
+            <span class="dept-badge">POLÍCIA DE HILLS</span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    function copyMacro(buttonElement) {
+        const textToCopy = buttonElement.parentElement.querySelector('.macro-text').innerText;
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showSuccessState(buttonElement);
+            }).catch(() => {
+                execCopyFallback(textToCopy, buttonElement);
+            });
+        } else {
+            execCopyFallback(textToCopy, buttonElement);
+        }
+    }
+
+    function execCopyFallback(text, buttonElement) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showSuccessState(buttonElement);
+        } catch (err) {
+            console.error('Falha ao copiar texto: ', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function showSuccessState(buttonElement) {
+        const originalText = buttonElement.innerHTML;
+        buttonElement.innerHTML = '✅ Copiado!';
+        buttonElement.classList.add('copied');
+        
+        setTimeout(() => {
+            buttonElement.innerHTML = originalText;
+            buttonElement.classList.remove('copied');
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>
